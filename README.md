@@ -26,4 +26,4 @@ Enter the item's sale price and tax rate, and then find item's price.
 
 ## Licensing
 
-UsefulScripts is released as open source software under the [GPL v3](https://opensource.org/licenses/gpl-3.0.html) license, see the [LICENSE](./LICENSE.md) file in the project root for the full license text.
+UsefulScripts is released as open source software under the [GPL v3](https://opensource.org/licenses/gpl-3.0.html) license, see the [LICENSE](./LICENSE) file in the project root for the full license text.
