@@ -1,6 +1,6 @@
 # Useful Python Scripts
 
-Here you can find basic and useful python scripts for daily life.
+Here you can find basic and useful python scripts for usage of Python on a daily basis.
 
 ## Bill Calculator
 
