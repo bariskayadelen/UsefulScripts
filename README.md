@@ -13,3 +13,9 @@ Calculates the electricity bill from consumption. The tarif and limit is set for
 ### billcal_electric-2.py
 
 Calculates the electricity consumption from bill. The tarif and limit is set for the Turkish national grid values.
+
+## Tax Calculator
+
+### tax_adder.py
+
+Enter your item price and tax rate calculates tax and item's final price
