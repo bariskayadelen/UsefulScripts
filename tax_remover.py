@@ -12,7 +12,7 @@ except :
     print('\n!!! Please enter numerical value!\n')
     quit()
 
-item =  round((100 * price) / (100 + rate), 2)
+item =  round((price * 100) / (100 + rate), 2)
 
 tax =  round((price - item),2)
 
