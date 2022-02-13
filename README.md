@@ -23,3 +23,7 @@ Enter your item price and tax rate calculates tax and item's final price.
 ### tax_remover.py
 
 Enter the item's sale price and tax rate, and then find item's price.
+
+## Licensing
+
+license:gpl-3.0
