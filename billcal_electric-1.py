@@ -1,3 +1,5 @@
+# Calculate Bill
+
 # Up to 210kWh consumption 1kWh = 1.37 TL
 # After 210kWh consumption 1kWh = 2.055 TL
 tarif = 1.37
