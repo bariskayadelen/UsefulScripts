@@ -1,9 +1,9 @@
 # Calculate Bill
 
-# Up to 210kWh consumption 1kWh = 1.37 TL
-# After 210kWh consumption 1kWh = 2.055 TL
+# Up to 240kWh consumption 1kWh = 1.37 TL
+# After 240kWh consumption 1kWh = 2.055 TL
 tarif = 1.37
-limit = 210
+limit = 240
 
 # Bill Function
 def ftr(a,b) :

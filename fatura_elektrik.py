@@ -2,13 +2,13 @@
 # Tüketim miktarından gelecek olan yaklaşık fatura miktarını veya
 # Faturadan tüketim miktarını hesaplayabilirsiniz.
 
-# 210kWh'a kadar elektrik tüketimi bedeli = 1.37 TL
-# 210kWh'den sonra elektrik tüketimi bedeli = 2.055 TL
+# 240kWh'a kadar elektrik tüketimi bedeli = 1.37 TL
+# 240kWh'den sonra elektrik tüketimi bedeli = 2.055 TL
 
 from unicodedata import numeric
 
 tarif = 1.37
-limit = 210
+limit = 240
 
 while True :
     # Tablo genişliği

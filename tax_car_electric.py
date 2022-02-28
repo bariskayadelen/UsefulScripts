@@ -92,7 +92,7 @@ while True :
     hizmet_bedeli = float(4672.25)
 
     # Turkiye Masrafi
-    turkiye_masrafi = vergi_toplami + diger_bedeller + hizmet_bedeli 
+    turkiye_masrafi = vergi_toplami + diger_bedeller + hizmet_bedeli
     toplam = round(satisfiyati + turkiye_masrafi,2)
     tplm_uz = len(str(toplam))
 
