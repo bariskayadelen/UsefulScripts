@@ -38,14 +38,15 @@ def mtrgc_elktrk(a) :
 
 # Hibrit Motor gucunden OTV orani hesaplama 
 # (a:Elektrik motor gucu, b:Motor hacmi, c:Satis fiyati)
+# Kaynak: https://www.resmigazete.gov.tr/eskiler/2022/01/20220113-2.pdf
 def mtrgc_hbrt(a,b,c) :
-    if 50 < a and b < 1800 and c < 114000 :
+    if 50 < a and b < 1800 and c < 130000 :
         d = 45
         return d
-    elif 50 < a and b < 1800 and 114000 <= b < 170000 :
+    elif 50 < a and b < 1800 and 130000 <= b < 210000 :
         d = 50
         return d
-    elif 50 < a and b < 1800 and 170000 <= c :
+    elif 50 < a and b < 1800 and 2100000 <= c :
         d = 80
         return d
     elif 100 < a and 2000 <= b < 2500 and c < 170000 :
@@ -60,14 +61,21 @@ def mtrgc_hbrt(a,b,c) :
 
 # Benzinli/Dizel Motor gucunden OTV orani hesaplama
 # (a:Motor hacmi b:Satis fiyati)
+# Kaynak: https://www.resmigazete.gov.tr/eskiler/2022/01/20220113-2.pdf
 def mtrgc_bnzn(a,b) :
-    if a < 1600 and b < 92000 :
+    if a < 1600 and b < 120000 :
         c = 45
         return c
-    elif a < 1600 and 92000 <= b < 150000 :
+    elif a < 1600 and 120000 <= b < 150000 :
         c = 50
         return c
-    elif a < 1600 and 150000 <= b :
+    elif a < 1600 and 150000 <= b < 175000 :
+        c = 60
+        return c
+    elif a < 1600 and 175000 <= b < 200000 :
+        c = 70
+        return c
+    elif a < 1600 and 200000 <= b :
         c = 80
         return c
     elif 1600 <= a < 2000 and b < 170000 :
@@ -253,7 +261,7 @@ while True :
             print(f"\n{'':=^{tbl_gen_dis}}\n")
             continue
 
-        otv_orani = mtrgc_hbrt(motorgucu, motorhacmi, satisfiyati)
+        # Amortisman yuzdesi hesaplama
         amortisman_yuzdesi = amrtsmn(aracyasi) / 100
         
         # Vergiye Esas Bedel
@@ -261,6 +269,7 @@ while True :
 
         # OTV
         otv_matrahi = round(cif + sair_masraf,2)
+        otv_orani = mtrgc_hbrt(motorgucu, motorhacmi, satisfiyati)
         otv = round(cif * otv_orani / 100, 2)
 
         # KDV
