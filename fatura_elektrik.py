@@ -16,7 +16,7 @@ while True :
     tbl_gen_ic = 40
     print(f"\n{' Fatura veya Tüketim Hesaplayıcı ':=^{tbl_gen_dis}}")
     print("\nLütfen yapmak istediğiniz işlemi numarasını giriniz:")
-    inp_tercih = input("\n[1] Tüketimden fatura hesapla\n[2] Faturadan tüketim hesapla\n[3] Programdan çık\n\nTercih: ")
+    inp_tercih = input("\n[1] Tüketimden fatura hesapla\n[2] Faturadan tüketim hesapla\n\n[3] Programdan çık\n\nTercih: ")
     try :
         if inp_tercih == "1" :
             print(f"\n{' Tüketimden Fatura Hesaplama ':-^{tbl_gen_dis}}")
