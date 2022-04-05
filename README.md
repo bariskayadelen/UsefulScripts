@@ -20,7 +20,7 @@ Electric bill calculator for Turkey.
 
 ### tax_diplomatic_car.py
 
-* Calculates the electricity consumption from bill. The tarif and limit is set for the Turkish national grid values.
+* Script that calculates the tax you will pay when you bring your diplomatically purchased vehicle to Turkey.
 
 ## Licensing
 
