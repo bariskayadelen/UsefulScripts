@@ -6,23 +6,21 @@ Here you can find basic and useful python scripts for usage of Python on a daily
 
 Electric bill calculator for Turkey.
 
-### billcal_electric-1.py
+### fatura_elektrik.py
 
-Calculates the electricity bill from consumption. The tarif and limit is set for the Turkish national grid values.
-
-### billcal_electric-2.py
-
-Calculates the electricity consumption from bill. The tarif and limit is set for the Turkish national grid values.
+* Calculates the electricity consumption from bill. The tarif and limit is set for the Turkish national grid values. 
+* Calculates the electricity bill from consumption. The tarif and limit is set for the Turkish national grid values.
 
 ## Tax Calculator
 
-### tax_adder.py
+### tax_add-remove.py
 
-Enter your item price and tax rate calculates tax and item's final price.
+* Enter your item price and tax rate calculates tax and item's final price 
+* nter the item's sale price and tax rate, and then find item's price.
 
-### tax_remover.py
+### tax_diplomatic_car.py
 
-Enter the item's sale price and tax rate, and then find item's price.
+* Calculates the electricity consumption from bill. The tarif and limit is set for the Turkish national grid values.
 
 ## Licensing
 
