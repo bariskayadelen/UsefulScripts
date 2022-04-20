@@ -32,7 +32,7 @@ Electric bill calculator for Turkey.
 * Lenght: km:Kilometre, m:Meter, cm:Centimeter, mm:Milimetre, μm:Micrometre, nm:Nanometre, mi:Mile, yd:Yard, ft:Foot, in:Inch
 * Temperature: °C:Celsius, °F:Fahrenheit, K:Kelvin, °R:Rankine
 * Weight: t:Ton, kg:Kilogram, g:Gram, mg:Milligram, µg:Microgram, t(imp):Ton(imperial), t(US):Ton(US), st:Stone, lb:Pound, oz:Ounce
-* Volume: 
+* Volume: m³:Cubic meter, L:Litre, mL:Millilitre, gal(US): US gallon, gal(imp):Imperial gallon, qt(US):US quart, qt(imp):Imperial quart, pt(US):US pint, pt(imp):Imperial pint, ft³:Cubic Foot, in³:Cubic inch
 
 ## Licensing
 
