@@ -105,7 +105,7 @@ def convert_weight(val, unit_in, unit_out):
     return val*UL[unit_in]/UL[unit_out]
 
 # Definition Volume
-# Units L:Litre, 
+# Units 'm³:, L:Litre, mL:Millilitre, gal(US): US gallon, gal(imp):Imperial gallon, qt(US):US quart, qt(imp):Imperial quart, pt(US):US pint, pt(imp):Imperial pint, ft³:Cubic Foot, in³:Cubic inch
 list_volume = {1:'m³', 2:'L', 3:'mL', 4:'gal(US)', 5:'gal(imp)', 6:'qt(US)', 7:'qt(imp)', 8:'pt(US)', 9:'pt(imp)', 10:'ft³', 11:'in³'}
 def menu_volume(unit):
     list_volume
