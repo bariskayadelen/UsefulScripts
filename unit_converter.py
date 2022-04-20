@@ -3,6 +3,7 @@
 from unicodedata import numeric
 
 # Definition Main Menu
+#list_title = {1:Area}
 list_menu = {1:'Area', 2:'Fuel Consumption', 3:'Length', 4:'Temperature', 5:'Weight', 6:'Volume'}
 def menu_main(unit):
     list_menu
@@ -93,18 +94,26 @@ def convert_temperature(val, unit_in, unit_out):
         return 'Error!!! '
 
 # Definition Weight
-# Units T:Ton, 
-list_weight = {1:'T', 2:'°F', 3:'K', 4:'°R'}
+# Units t:Ton, kg:Kilogram, g:Gram, mg:Milligram, µg:Microgram, t(imp):Ton(imperial), t(US):Ton(US), st:Stone, lb:Pound, oz:Ounce
+list_weight = {1:'t', 2:'kg', 3:'g', 4:'mg', 5:'µg', 6:'t(imp)', 7:'t(US)', 8:'st', 9:'lb', 10:'oz'}
 def menu_weight(unit):
     list_weight
     return list_weight[unit]
 
+def convert_weight(val, unit_in, unit_out):
+    UL = {'T':1000000.0, 'kg':1000.0, 'g':1.0, 'mg':0.001, 'µg':0.000001, 't(imp)':0.9463529460, 't(US)':1.13652, 'st':0.473176, 'lb':0.568261, 'oz':28.3168}
+    return val*UL[unit_in]/UL[unit_out]
+
 # Definition Volume
 # Units L:Litre, 
-list_volume = {1:'m³', 2:'L', 3:'mm³', 4:'°R'}
+list_volume = {1:'m³', 2:'L', 3:'mL', 4:'gal(US)', 5:'gal(imp)', 6:'qt(US)', 7:'qt(imp)', 8:'pt(US)', 9:'pt(imp)', 10:'ft³', 11:'in³'}
 def menu_volume(unit):
     list_volume
     return list_volume[unit]
+
+def convert_volume(val, unit_in, unit_out):
+    UL = {'m³':1000.0, 'L':1.0, 'mL':0.001, 'gal(US)':3.785411784, 'gal(imp)':4.54609, 'qt(US)':0.9463529460, 'qt(imp)':1.13652, 'pt(US)':0.473176, 'pt(imp)':0.568261, 'ft³':28.3168, 'in³':0.0163871}
+    return val*UL[unit_in]/UL[unit_out]
 
 # Table
 tbl_len_out = 78
@@ -123,11 +132,9 @@ while True :
     print(f"{' [3] Length ':{tbl_len_in}}  {' [6] Volume  ':{tbl_len_in}}")
     inp_choice = input(f"\n{' [Q] Quit ':{tbl_len_in}}  {'  ':{tbl_len_in}} \n\nChoice: ")
 
-    # Area Converter
     if inp_choice == "1" :
         print(f"\n{' Area Converter ':-^{tbl_len_out}}")
         print(f"\nUnits: [1]km², [2]ha, [3]daa, [4]a, [5]m², [6]mm², [7]mi², [8]yd², [9]ft², [10]in², [11]acre")
-        print(f"{list_area}")
 
         inp_opt1 = input("\nChoose your input unit: ")
         try :
@@ -259,7 +266,7 @@ while True :
     # Weight Converter
     elif inp_choice == "5" :
         print(f"\n{' Weight Converter ':-^{tbl_len_out}}") 
-        print(f"\nUnits: [1], [2]kg, [3]g, [4]mm, [5]μm, [6]nm, [7]mi, [8]yd, [9]ft, [10]in")
+        print(f"\nUnits: [1]t, [2]kg, [3]g, [4]mg, [5]µg, [6]t(imp), [7]t(US), [8]st, [9]lb, [10]oz")
 
         inp_opt1 = input("\nChoose your input unit: ")
         try :
@@ -285,14 +292,14 @@ while True :
             print(f"\nError!!! {inp_val} is not numeric data. Please enter numerical value!")
             continue
 
-        calc = convert_lenght(val, menu_lenght(opt1), menu_lenght(opt2))
+        calc = round(convert_weight(val, menu_weight(opt1), menu_weight(opt2)),4)
         print(f"\n{'':-^{tbl_len_out}}")
         print(f"\n{inp_val} {menu_weight(opt1)} is equal to {calc} {menu_weight(opt2)}")
 
     # Volume Converter
     elif inp_choice == "6" :
         print(f"\n{' Volume Converter ':-^{tbl_len_out}}")
-        print(f"\nUnits: [1], [2]kg, [3]g, [4]mm, [5]μm, [6]nm, [7]mi, [8]yd, [9]ft, [10]in")
+        print(f"\nUnits: [1]m³, [2]L, [3]mL, [4]gal(US), [5]gal(imp), [6]qt(US), [7]qt(imp), [8]pt(US), [9]pt(imp), [10]ft³, [11]in³")
 
         inp_opt1 = input("\nChoose your input unit: ")
         try :
@@ -318,7 +325,7 @@ while True :
             print(f"\nError!!! {inp_val} is not numeric data. Please enter numerical value!")
             continue
 
-        calc = convert_lenght(val, menu_lenght(opt1), menu_lenght(opt2))
+        calc = round(convert_volume(val, menu_volume(opt1), menu_volume(opt2)),4)
         print(f"\n{'':-^{tbl_len_out}}")
         print(f"\n{inp_val} {menu_volume(opt1)} is equal to {calc} {menu_volume(opt2)}")
 
