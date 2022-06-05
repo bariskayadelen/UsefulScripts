@@ -4,27 +4,55 @@ from unicodedata import numeric
 
 # Definition Main Menu
 #list_title = {1:Area}
-list_menu = {1:'Area', 2:'Fuel Consumption', 3:'Length', 4:'Temperature', 5:'Weight', 6:'Volume'}
+list_menu = {
+    1:'Area', 
+    2:'Fuel Consumption', 
+    3:'Length', 
+    4:'Temperature', 
+    5:'Weight', 
+    6:'Volume'}
 def menu_main(unit):
-    list_menu
     return list_menu[unit]
 
 # Definition Area
 # Units: km²:Square kilometre, ha:Hectare, daa:Decare, a:Are, m²:Square metre, mm²:Square millimetre, mi²:Square mile, yd²:Square yard, ft²:Square foot, in²:Square inch, acre:Acre")
-list_area = {1:'km²', 2:'ha', 3:'daa', 4:'a', 5:'m²', 6:'mm²', 7:'mi²', 8:'yd²', 9:'ft²', 10:'in²', 11:'acre'}
+list_area = {
+    1:'km²', 
+    2:'ha', 
+    3:'daa', 
+    4:'a', 
+    5:'m²', 
+    6:'mm²', 
+    7:'mi²', 
+    8:'yd²', 
+    9:'ft²', 
+    10:'in²', 
+    11:'acre'}
 def menu_area(unit):
-    list_area
     return list_area[unit]
 
 def convert_area(val, unit_in, unit_out):
-    UL = {'km²':1000000.0, 'ha':10000.0, 'daa':1000.0, 'a':100.0, 'm²':1.0, 'mm²':0.000001, 'mi²':2589988.11, 'yd²':0.836127, 'ft²':0.092903, 'in²':0.0006451593, 'acre':4046.8564224}
+    UL = {
+        'km²':1000000.0, 
+        'ha':10000.0, 
+        'daa':1000.0, 
+        'a':100.0, 
+        'm²':1.0, 
+        'mm²':0.000001, 
+        'mi²':2589988.11, 
+        'yd²':0.836127, 
+        'ft²':0.092903, 
+        'in²':0.0006451593, 
+        'acre':4046.8564224}
     return val*UL[unit_in]/UL[unit_out]
 
 # Definition Fuel Consumption
 # Units: L/100km:Liters per 100 km, mpg(US):Miles per gallon (US), mpg(Imp):Miles per gallon (Imp)
-list_fuel = {1:'L/100km', 2:'mpg(US)', 3:'mpg(Imp)'}
+list_fuel = {
+    1:'L/100km', 
+    2:'mpg(US)', 
+    3:'mpg(Imp)'}
 def menu_fuel(unit):
-    list_fuel
     return list_fuel[unit]
 
 def convert_fuel(val, unit_in, unit_out):
@@ -53,20 +81,42 @@ def convert_fuel(val, unit_in, unit_out):
 
 # Definition Lenght
 # Units: km:Kilometre, m:Meter, cm:Centimeter, mm:Milimetre, μm:Micrometre, nm:Nanometre, mi:Mile, yd:Yard, ft:Foot, in:Inch
-list_lenght = {1:'km', 2:'m', 3:'cm', 4:'mm', 5:'μm', 6:'nm', 7:'mi', 8:'yd', 9:'ft', 10:'in'}
+list_lenght = {
+    1:'km', 
+    2:'m', 
+    3:'cm', 
+    4:'mm', 
+    5:'μm', 
+    6:'nm', 
+    7:'mi', 
+    8:'yd', 
+    9:'ft', 
+    10:'in'}
 def menu_lenght(unit):
-    list_lenght
     return list_lenght[unit]
 
 def convert_lenght(val, unit_in, unit_out):
-    UL = {'km':1000.0, 'm':1.0, 'cm':0.01, 'mm':0.001, 'μm':0.000001, 'nm':0.000000001, 'mi':1609.344, 'yd':0.9144, 'ft':0.3048, 'in':0.0254,}
+    UL = {
+        'km':1000.0, 
+        'm':1.0, 
+        'cm':0.01, 
+        'mm':0.001, 
+        'μm':0.000001, 
+        'nm':0.000000001, 
+        'mi':1609.344, 
+        'yd':0.9144, 
+        'ft':0.3048, 
+        'in':0.0254,}
     return val*UL[unit_in]/UL[unit_out]
 
 # Definition Temperature
 # Units: °C:Celsius, °F:Fahrenheit, K:Kelvin, °R:Rankine
-list_temperature = {1:'°C', 2:'°F', 3:'K', 4:'°R'}
+list_temperature = {
+    1:'°C', 
+    2:'°F', 
+    3:'K', 
+    4:'°R'}
 def menu_temperature(unit):
-    list_temperature
     return list_temperature[unit]
 
 def convert_temperature(val, unit_in, unit_out):
@@ -95,24 +145,63 @@ def convert_temperature(val, unit_in, unit_out):
 
 # Definition Weight
 # Units t:Ton, kg:Kilogram, g:Gram, mg:Milligram, µg:Microgram, t(imp):Ton(imperial), t(US):Ton(US), st:Stone, lb:Pound, oz:Ounce
-list_weight = {1:'t', 2:'kg', 3:'g', 4:'mg', 5:'µg', 6:'t(imp)', 7:'t(US)', 8:'st', 9:'lb', 10:'oz'}
+list_weight = {
+    1:'T', 
+    2:'kg', 
+    3:'g', 
+    4:'mg', 
+    5:'µg', 
+    6:'t(imp)', 
+    7:'t(US)', 
+    8:'st', 
+    9:'lb', 
+    10:'oz'}
 def menu_weight(unit):
-    list_weight
     return list_weight[unit]
 
 def convert_weight(val, unit_in, unit_out):
-    UL = {'T':1000000.0, 'kg':1000.0, 'g':1.0, 'mg':0.001, 'µg':0.000001, 't(imp)':0.9463529460, 't(US)':1.13652, 'st':0.473176, 'lb':0.568261, 'oz':28.3168}
+    UL = {
+        'T':1000000.0, 
+        'kg':1000.0, 
+        'g':1.0, 
+        'mg':0.001, 
+        'µg':0.000001, 
+        't(imp)':0.9463529460, 
+        't(US)':1.13652, 
+        'st':0.473176, 
+        'lb':0.568261, 
+        'oz':28.3168}
     return val*UL[unit_in]/UL[unit_out]
 
 # Definition Volume
 # Units m³:Cubic meter, L:Litre, mL:Millilitre, gal(US): US gallon, gal(imp):Imperial gallon, qt(US):US quart, qt(imp):Imperial quart, pt(US):US pint, pt(imp):Imperial pint, ft³:Cubic Foot, in³:Cubic inch
-list_volume = {1:'m³', 2:'L', 3:'mL', 4:'gal(US)', 5:'gal(imp)', 6:'qt(US)', 7:'qt(imp)', 8:'pt(US)', 9:'pt(imp)', 10:'ft³', 11:'in³'}
+list_volume = {
+    1:'m³', 
+    2:'L', 
+    3:'mL', 
+    4:'gal(US)', 
+    5:'gal(imp)', 
+    6:'qt(US)', 
+    7:'qt(imp)', 
+    8:'pt(US)', 
+    9:'pt(imp)', 
+    10:'ft³', 
+    11:'in³'}
 def menu_volume(unit):
-    list_volume
     return list_volume[unit]
 
 def convert_volume(val, unit_in, unit_out):
-    UL = {'m³':1000.0, 'L':1.0, 'mL':0.001, 'gal(US)':3.785411784, 'gal(imp)':4.54609, 'qt(US)':0.9463529460, 'qt(imp)':1.13652, 'pt(US)':0.473176, 'pt(imp)':0.568261, 'ft³':28.3168, 'in³':0.0163871}
+    UL = {
+        'm³':1000.0, 
+        'L':1.0, 'mL':0.001, 
+        'gal(US)':3.785411784, 
+        'gal(imp)':4.54609, 
+        'qt(US)':0.9463529460, 
+        'qt(imp)':1.13652, 
+        'pt(US)':0.473176, 
+        'pt(imp)':0.568261, 
+        'ft³':28.3168, 
+        'in³':0.0163871}
     return val*UL[unit_in]/UL[unit_out]
 
 # Table
@@ -135,6 +224,7 @@ while True :
     if inp_choice == "1" :
         print(f"\n{' Area Converter ':-^{tbl_len_out}}")
         print(f"\nUnits: [1]km², [2]ha, [3]daa, [4]a, [5]m², [6]mm², [7]mi², [8]yd², [9]ft², [10]in², [11]acre")
+        # print(f"\nUnits: {list_area.keys}")
 
         inp_opt1 = input("\nChoose your input unit: ")
         try :

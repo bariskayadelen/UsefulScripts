@@ -1,0 +1,22 @@
+Seçenek,Abone Grubu,Tarife,Tarife Bedeli,Dağıtım Bedeli
+1,Mesken,Tek zamanlı (8 kWh/gün altı),0.955452,0.335187
+2,Mesken,Tek zamanlı (8 kWh/gün üstü),1.592790,0.335187
+3,Mesken,Gündüz (T1),1.617720,0.335187
+4,Mesken,Gündüz (T2),2.525509,0.335187
+5,Mesken,Gündüz (T3),0.891764,0.335187
+6,Ticarethane,Tek zamanlı (8 kWh/gün altı),1.746438,0.342716
+7,Ticarethane,Tek zamanlı (8 kWh/gün üstü),2.437383,0.342716
+8,Ticarethane,Gündüz (T1),2.460159,0.342716
+9,Ticarethane,Gündüz (T2),3.765007,0.342716
+10,Ticarethane,Gündüz (T3),1.421943,0.342716
+11,Sanayi,Tek zamanlı,2.622851,0.252888
+12,Sanayi,Gündüz (T1),2.652400,0.252888
+13,Sanayi,Gündüz (T2),4.065304,0.252888
+14,Sanayi,Gündüz (T3),1.512050,0.252888
+15,Tarımsal Faaliyetler,Tek zamanlı,1.643828,0.281603
+16,Tarımsal Faaliyetler,Gündüz (T1),1.686088,0.281603
+17,Tarımsal Faaliyetler,Gündüz (T2),2.581106,0.281603
+18,Tarımsal Faaliyetler,Gündüz (T3),0.923882,0.281603
+19,Diğer,Şehit Aileleri ve Muharip Malul Gaziler,0.387776,0.227335
+20,Diğer,Aydınlatma,2.249134,0.328247
+21,Diğer,Genel Aydınlatma,2.047600,0.328247
