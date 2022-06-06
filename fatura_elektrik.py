@@ -6,30 +6,54 @@
 # 240kWh'den sonra elektrik tüketimi bedeli = 2.055 TL
 
 from unicodedata import numeric
+from os import system, name
 
-tarif = 1.37
+# clear fonksiyonu
+def clear():
+    # for windows
+    if name == 'nt':
+        _ = system('cls')
+    # for mac and linux(here, os.name is 'posix')
+    else:
+        _ = system('clear')
+
+# Tüketim fonksiyonu
+def ftr(a,b) :
+    if a <= limit :
+        c = a * b
+        return c
+    else :
+        c = (limit * b) + ((a - limit) * b * 1.5)
+        return c 
+
+# Fatura fonksiyonu
+def tktm(a) :
+    if a < (tarif * limit) :
+        a = a / tarif
+        return a
+    else :
+        b = limit + ((a - (tarif * limit)) / (tarif * 1.5))
+    return b
+
+tarif = 1.44
 limit = 240
 
+# Tablo genişliği
+tbl_gen_dis = 70
+tbl_gen_ic = 40
+
+clear()
 while True :
-    # Tablo genişliği
-    tbl_gen_dis = 70
-    tbl_gen_ic = 40
+    
     print(f"\n{' Fatura veya Tüketim Hesaplayıcı ':=^{tbl_gen_dis}}")
     print("\nLütfen yapmak istediğiniz işlemi numarasını giriniz:")
     inp_tercih = input("\n[1] Tüketimden fatura hesapla\n[2] Faturadan tüketim hesapla\n\n[3] Programdan çık\n\nTercih: ")
     try :
         if inp_tercih == "1" :
+            clear()
             print(f"\n{' Tüketimden Fatura Hesaplama ':-^{tbl_gen_dis}}")
 
-            # Tüketim fonksiyonu
             tuketim = None
-            def ftr(a,b) :
-                if a <= limit :
-                    c = a * b
-                    return c
-                else :
-                    c = (limit * b) + ((a - limit) * b * 1.5)
-                    return c 
             inp_ilk = input('\nLütfen ilk sayaç verisini giriniz: ')
             try :
                 if inp_ilk.isnumeric :
@@ -57,19 +81,10 @@ while True :
                 print(f"\nHata!!! Son sayaç verisi ilk sayaç verisinden küçük olamaz. Girilen değerleri kontrol ederek yeniden giriniz!")
 
         elif inp_tercih == "2" :
+            clear()
             print(f"\n{' Faturadan Tüketim Hesaplama ':-^{tbl_gen_dis}}")
             
             tuketim = None
-
-            # Fatura fonksiyonu
-            def tktm(a) :
-                if a < (tarif * limit) :
-                    a = a / 1.37
-                    return a
-                else :
-                    b = limit + ((a - (tarif * limit)) / (tarif * 1.5))
-                return b
-
             inp_ftr = input('\nLütfen faturanızı giriniz: ')
             try :
                 if inp_ftr.isnumeric :
