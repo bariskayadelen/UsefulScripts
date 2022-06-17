@@ -54,11 +54,10 @@ def menu_bottom():
             clear()
             print(f"\n{' Hız/Mesafe/Zaman Hesaplama Programı ':=^{tbl_len_out}}")
             # print(f"\n{'':-^{tbl_len_out}}")
-            print(f"\n Hata!!! Girmiş olduğunuz {inp} değeri menüde mevcut değildir.")
+            print(f"\n Hata!!! Girmiş olduğunuz '{inp}' değeri menüde mevcut değildir.")
             print(f"\n Lütfen menü seçeneğini doğru giriniz!")
         continue
 
-# Eksik fonksiyon !!!!!!
 def check_speed(inp):
     while True:
         try:
@@ -67,7 +66,7 @@ def check_speed(inp):
         except:
             clear()
             print(f"\n{' Hız/Mesafe/Zaman Hesaplama Programı ':=^{tbl_len_out}}")
-            print(f"\n Hata!!! Girmiş olduğunuz {inp} değeri sayisal bir değer değildir.")
+            print(f"\n Hata!!! Girmiş olduğunuz '{inp}' değeri sayisal bir değer değildir.")
             print("\n Lütfen sayısal bir değer giriniz.")
             inp = input(f"\n{' Ortalama hızınızı km/h olarak giriniz':{tbl_len_in}}: ") 
             continue
@@ -81,7 +80,7 @@ def check_time(inp):
         except:
             clear()
             print(f"\n{' Hız/Mesafe/Zaman Hesaplama Programı ':=^{tbl_len_out}}")
-            print(f"\n Hata!!! Girmiş olduğunuz {inp} değeri bir zaman değeri değildir.")
+            print(f"\n Hata!!! Girmiş olduğunuz '{inp}' değeri bir zaman değeri değildir.")
             print("\n Lütfen sizden istendiği şekilde bir değer giriniz.")
             inp = input(f"\n{' Zamanı saat:dakika olarak giriniz':{tbl_len_in}}: ")
             continue
@@ -94,7 +93,7 @@ def check_dist(inp):
         except:
             clear()
             print(f"\n{' Hız/Mesafe/Zaman Hesaplama Programı ':=^{tbl_len_out}}")
-            print(f"\n Hata!!! Girmiş olduğunuz {inp} değeri sayisal bir değer değildir.")
+            print(f"\n Hata!!! Girmiş olduğunuz '{inp}' değeri sayisal bir değer değildir.")
             print("\n Lütfen sayısal bir değer giriniz.")
             inp = input(f"\n{' Mesafeyi km olarak giriniz':{tbl_len_in}}: ") 
             continue
