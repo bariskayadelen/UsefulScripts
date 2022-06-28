@@ -1,6 +1,42 @@
 # Diplomatik aracın Türkiye'ye getirildiğinde ödeyeceği vergiyi hesaplayıcı program
 
 from unicodedata import numeric
+from os import system, name
+# from datetime import datetime
+import urllib.request
+from bs4 import BeautifulSoup as soup
+
+# Define clear function
+def clear():
+    # for windows
+    if name == 'nt':
+        _ = system('cls')
+    # for mac and linux(here, os.name is 'posix')
+    else:
+        _ = system('clear')
+
+def exchange(inp, amount):
+    url = "https://www.isbank.com.tr/en/foreign-exchange-rates"
+    company = "Türkiye İş Bankası"
+    req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'})
+    uClient = urllib.request.urlopen(req)
+    page_html = uClient.read()
+    uClient.close()
+    page_soup = soup(page_html.decode('utf-8','ignore').encode("utf-8"), 'html5lib')
+    if inp == "USD":
+        # US Dollar
+        table_usd = page_soup.find_all('tr', {"id":"ctl00_ctl18_g_6e26f0d7_7521_4191_b169_6f6bb7e95edc_ctl00_FxRatesRepeater_ctl00_fxItem"})[0]
+        # usd_buy = table_usd.find_all('td')[1].text.strip().replace(",",".")
+        usd_sell = table_usd.find_all('td')[2].text.strip().replace(",",".")
+        total = float(usd_sell) * amount
+        return total
+    elif inp == "EUR":
+        # Euro
+        table_eur = page_soup.find_all('tr', {"id":"ctl00_ctl18_g_6e26f0d7_7521_4191_b169_6f6bb7e95edc_ctl00_FxRatesRepeater_ctl01_fxItem"})[0]
+        # eur_buy = table_eur.find_all('td')[1].text.strip().replace(",",".")
+        eur_sell = table_eur.find_all('td')[2].text.strip().replace(",",".")
+        total = float(eur_sell) * amount
+        return total
 
 # Araç Yaşından Amortisman Oranını Hesaplama
 def amrtsmn(a) :
@@ -88,27 +124,112 @@ def mtrgc_bnzn(a,b) :
         c = 220
         return c
 
+def menu_title():
+    return (f"\n{' Diplomatik Araç Vergisi Hesaplama ':=^{tbl_gen_dis}}")
+
+def main_menu():
+    print(menu_title())
+    print(f"\nLütfen yapmak istediğiniz işlemi aşağıdaki menüden seçiniz:")
+    print(f"\n [1] Elektrikli araç vergisi hesapla")
+    print(f" [2] Hibrit araç vergisi hesapla")
+    print(f" [3] Benzinli/Dizel araç vergisi hesapla")
+
+def arac_satin_alma_yili():
+    while True:
+        inp = input("\n Araç satın alma yılını giriniz: ")
+        try:
+            satin_alma_yili = int(inp)
+            return satin_alma_yili
+        except:
+            clear()
+            print(menu_title())
+            print(f"\n Hata!!! {inp} sayısal veri değildir. Lütfen sayısal veri giriniz!")
+        continue
+
+def menu_alt():
+    while True:
+        inp = input(f"\n [A] Ana menüye dön | [Q] Programdan Çık | Tercih: ")
+        if inp.lower() == "q":
+            print(f"\n{' İyi Günler ':=^{tbl_gen_dis}}\n")
+            return "break"
+        elif inp.lower() == "a":
+            return "continue"
+        else:
+            clear()
+            print(menu_title())
+            print(f"\n Hata!!! Girmiş olduğunuz '{inp}' değeri menüde mevcut değildir.")
+            print(f"\n Lütfen menü seçeneğini doğru giriniz!")
+            print(f"\n{'':-^{tbl_gen_dis}}")
+        continue
+
+def arac_yurda_giris_yili():
+    while True:
+        inp = input("\n Aracın Türkiye\'ye giriş yılını giriniz: ")
+        try:
+            yurda_giris_yili = int(inp)
+            return yurda_giris_yili
+        except:
+            clear()
+            print(menu_title())
+            print(f"\n Hata!!! {inp} sayısal veri değildir. Lütfen sayısal veri giriniz!")
+        continue
+
+def arac_motorgucu():
+    while True:
+        inp = input("\n Aracın motor gücünü kWh olarak giriniz: ")
+        try:
+            motorgucu = int(inp)
+            return motorgucu
+        except:
+            clear()
+            print(menu_title())
+            print(f"\n Hata!!! {inp} sayısal veri değildir. Lütfen sayısal veri giriniz!")
+        continue
+
+def arac_motorhacmi():
+    while True:
+        inp = input("\n Aracın motor hacmini cc olarak giriniz: ")
+        try:
+            motorhacmi = int(inp)
+            return motorhacmi
+        except:
+            clear()
+            print(menu_title())
+            print(f"\n Hata!!! {inp} sayısal veri değildir. Lütfen sayısal veri giriniz!")
+        continue
+
+def arac_satisfiyati():
+    while True:
+        inp = input("\n Aracın vergisiz satın alma bedelini ₺ olarak giriniz: ")
+        try:
+            satisfiyati = int(inp)
+            return satisfiyati
+        except:
+            clear()
+            print(menu_title())
+            print(f"\n Hata!!! {inp} sayısal veri değildir. Lütfen sayısal veri giriniz!")
+        continue
+
 # KDV Orani
 kdv_orani = 18
 
 # Navlun ve Sigorta Bedeli 200 Euro
-navlun_sigorta = float(2076.56)
-    
+navlun_sigorta = exchange('EUR', float(200))
+
 # Sair Masraf Bedeli 150 Euro
-sair_masraf = float(1557.42)
+sair_masraf = exchange('EUR', float(150))
 
 # Diger Bedeller Toplami 400 Euro
-diger_bedeller = float(4153.11)
+diger_bedeller = exchange('EUR', float(400))
 
 # Hizmet Bedeli 450 Euro
-hizmet_bedeli = float(4672.25)
+hizmet_bedeli = exchange('EUR', float(450))
 
 # Tablo Genisligi
-tbl_gen_dis = 70
+tbl_gen_dis = 72
 tbl_gen_ic = 40
 
 while True :
-
     inp_tercih = None
     inp_satin_alma_yili = None
     inp_yurda_giris_yili = None
@@ -116,48 +237,28 @@ while True :
     inp_motorhacmi = None
     inp_satisfiyati = None
 
-    print(f"\n{' Diplomatik Araç Vergisi Hesaplama ':=^{tbl_gen_dis}}")
-    print("\nHesaplama için aracın türünü giriniz:")
-    inp_tercih = input("\n[1] Elektrikli araç vergisi hesapla\n[2] Hibrit araç vergisi hesapla\n[3] Benzinli/Dizel araç vergisi hesapla\n\n[9] Programdan çık\n\nTercih: ")
+    clear()
+    main_menu()
+    print(f"\n{'':-^{tbl_gen_dis}}")
+    inp_menu = input(f"\n[Q] Programdan Çık | Tercih: ")
+
+    # Programdan Çıkış
+    if inp_menu.lower() == "q":
+        print(f"\n{' İyi Günler ':=^{tbl_gen_dis}}\n")
+        break
 
     # Elektrikli Araç vergisi Hesaplama
-    if inp_tercih == "1" :
-        print(f"\n{' Elektrikli Araç ':-^{tbl_gen_dis}}")
-
-        inp_satin_alma_yili = input("\nAraç satın alma yılını giriniz: ")
-        try :
-            satin_alma_yili = int(inp_satin_alma_yili)
-        except :
-            print(f"\n{' !!!!! ':-^{tbl_gen_dis}}")
-            print(f"\nHata!!! {inp_satin_alma_yili} sayısal veri değildir. Lütfen sayısal veri giriniz!")
-            continue
-
-        inp_yurda_giris_yili = input("\nAracın Türkiye\'ye giriş yılını giriniz: ")
-        try :
-            yurda_giris_yili = int(inp_yurda_giris_yili)
-        except :
-            print(f"\n{' !!!!! ':-^{tbl_gen_dis}}")
-            print(f"\nHata!!! {inp_yurda_giris_yili} sayısal veri değildir. Lütfen sayısal veri giriniz!")
-            continue
-
-        inp_motorgucu = input("\nAracın motor gücünü kWh olarak giriniz: ")
-        try :
-            motorgucu = int(inp_motorgucu)
-        except :
-            print(f"\n{' !!!!! ':-^{tbl_gen_dis}}")
-            print(f"\nHata!!! {inp_motorgucu} sayısal veri değildir. Lütfen sayısal veri giriniz!")
-            continue
-
-        inp_satisfiyati = input("\nAracın vergisiz satın alma bedelini ₺ olarak giriniz: ")
-        try :
-            satisfiyati = float(inp_satisfiyati)
-        except :
-            print(f"\n{' !!!!! ':-^{tbl_gen_dis}}")
-            print(f"\nHata!!! {inp_satisfiyati} sayısal veri değildir. Lütfen sayısal veri giriniz!")
-            continue
+    elif inp_menu == "1" :
+        clear()
+        print(menu_title())
+        print(f"\n Elektrikli araç hesapla")
+        yil_1 = arac_satin_alma_yili()
+        yil_2 = arac_yurda_giris_yili()
+        motorgucu = arac_motorgucu()
+        satisfiyati = arac_satisfiyati()
         
-        if yurda_giris_yili >= satin_alma_yili :
-            aracyasi = yurda_giris_yili - satin_alma_yili
+        if yil_2 >= yil_1 :
+            aracyasi = yil_2 - yil_1
         else :
             print(f"\n{' !!!!! ':-^{tbl_gen_dis}}")
             print(f"\n{'Satın alma tarihi Yurda giriş tarihinden küçük olmamaz.':^{tbl_gen_dis}}")
@@ -166,7 +267,7 @@ while True :
             continue
         
         otv_orani = mtrgc_elktrk(motorgucu)
-        aracyasi = yurda_giris_yili - satin_alma_yili
+        aracyasi = yil_2 - yil_1
 
         amortisman_yuzdesi = amrtsmn(aracyasi) / 100
 
@@ -188,13 +289,15 @@ while True :
         toplam = round(satisfiyati + turkiye_masrafi,2)
         tplm_uz = len(str(toplam))
 
-        print(f"\n{' Araç Bilgisi ':=^{tbl_gen_dis}}\n")
-        print(f"{'Aracın Vergisiz Satış Bedeli':<{tbl_gen_ic}} : {satisfiyati:.2f}₺")
+        clear()
+        print(menu_title())
+        print(f"\n{' Araç Bilgisi ':-^{tbl_gen_dis}}\n")
+        print(f"{'Aracın Vergisiz Satış Bedeli':<{tbl_gen_ic}} : {satisfiyati:{tplm_uz}.2f}₺")
         print(f"{'Aracın Motor Gücü':<{tbl_gen_ic}} : {motorgucu}kWh")
         print(f"{'Aracın Yaşı':<{tbl_gen_ic}} :", aracyasi)
         print(f"{'Araca Uygulanacak Amortisman':<{tbl_gen_ic}} : {aracyasi + 1}. Kademe %{amrtsmn(aracyasi)} Amortisman")
-        print(f"{'Amortisman Sonrası Araç Bedeli':<{tbl_gen_ic}} : {cif:.2f}₺")
-        print(f"\n{' Vergiler ':=^{tbl_gen_dis}}\n")
+        print(f"{'Amortisman Sonrası Araç Bedeli':<{tbl_gen_ic}} : {cif:{tplm_uz}.2f}₺")
+        print(f"\n{' Vergiler ':-^{tbl_gen_dis}}\n")
         print(f"{'Navlun, Sigorta ve Sair Masraf Bedeli':<{tbl_gen_ic}} : {navlun_sigorta + sair_masraf:{tplm_uz}.2f}₺")
         print(f"{'Araca Uygulanacak ÖTV Bedeli ve Oranı':<{tbl_gen_ic}} : {otv:{tplm_uz}.2f}₺ (%{otv_orani})")
         print(f"{'Araca Uygulanacak KDV Bedeli ve Oranı':<{tbl_gen_ic}} : {kdv:{tplm_uz}.2f}₺ (%{kdv_orani})")
@@ -204,56 +307,25 @@ while True :
         print(f"{'Anahtar Teslim Hizmet Bedeli':<{tbl_gen_ic}} : {hizmet_bedeli:{tplm_uz}.2f}₺")
         print(f"{'':-^{tbl_gen_ic}}")
         print(f"{'Aracın Türkiyedeki Toplam Masrafı':<{tbl_gen_ic}} : {turkiye_masrafi:{tplm_uz}.2f}₺")
-        print(f"\n{'':=^{tbl_gen_dis}}")
+        print(f"\n{'':-^{tbl_gen_dis}}")
         print(f"\n{'Aracın Toplam Satınalma Maliyeti':<{tbl_gen_ic}} : {toplam:{tplm_uz}.2f}₺")
-        print(f"\n{'':=^{tbl_gen_dis}}\n")
+        print(f"\n{'':-^{tbl_gen_dis}}")
+        if menu_alt() == "break": break
+
 
     # Hibrit Araç Vergisi Hesaplama
-    elif inp_tercih == "2" :
-        print(f"\n{' Hibrit Araç ':-^{tbl_gen_dis}}")
+    elif inp_menu == "2" :
+        clear()
+        print(menu_title())
+        print(f"\n Hibrit araç hesapla")
+        yil_1 = arac_satin_alma_yili()
+        yil_2 = arac_yurda_giris_yili()
+        motorhacmi = arac_motorhacmi()
+        motorgucu = arac_motorgucu()
+        satisfiyati = arac_satisfiyati()
 
-        inp_satin_alma_yili = input("\nAraç satın alma yılını giriniz: ")
-        try :
-            satin_alma_yili = int(inp_satin_alma_yili)
-        except :
-            print(f"\n{' !!!!! ':-^{tbl_gen_dis}}")
-            print(f"\nHata!!! {inp_satin_alma_yili} sayısal veri değildir. Lütfen sayısal veri giriniz!")
-            continue
-
-        inp_yurda_giris_yili = input("\nAracın Türkiye\'ye giriş yılını giriniz: ")
-        try :
-            yurda_giris_yili = int(inp_yurda_giris_yili)
-        except :
-            print(f"\n{' !!!!! ':-^{tbl_gen_dis}}")
-            print(f"\nHata!!! {inp_yurda_giris_yili} sayısal veri değildir. Lütfen sayısal veri giriniz!")
-            continue
-
-        inp_motorhacmi = input("\nAracın motor hacmini cc olarak giriniz: ")
-        try :
-            motorhacmi = int(inp_motorhacmi)
-        except :
-            print(f"\n{' !!!!! ':-^{tbl_gen_dis}}")
-            print(f"\nHata!!! {inp_motorhacmi} sayısal veri değildir. Lütfen sayısal veri giriniz!")
-            continue
-
-        inp_motorgucu = input("\nAracın elektrik motoru gücünü kWh olarak giriniz: ")
-        try :
-            motorgucu = int(inp_motorgucu)
-        except :
-            print(f"\n{' !!!!! ':-^{tbl_gen_dis}}")
-            print(f"\nHata!!! {inp_motorgucu} sayısal veri değildir. Lütfen sayısal veri giriniz!")
-            continue
-
-        inp_satisfiyati = input("\nAracın vergisiz satın alma bedelini ₺ olarak giriniz: ")
-        try :
-            satisfiyati = float(inp_satisfiyati)
-        except :
-            print(f"\n{' !!!!! ':-^{tbl_gen_dis}}")
-            print(f"\nHata!!! {inp_satisfiyati} sayısal veri değildir. Lütfen sayısal veri giriniz!")
-            continue
-
-        if yurda_giris_yili >= satin_alma_yili :
-            aracyasi = yurda_giris_yili - satin_alma_yili
+        if yil_2 >= yil_1 :
+            aracyasi = yil_2 - yil_1
         else :
             print(f"\n{' !!!!! ':-^{tbl_gen_dis}}")
             print(f"\n{'Satın alma tarihi Yurda giriş tarihinden küçük olmamaz.':^{tbl_gen_dis}}")
@@ -283,14 +355,16 @@ while True :
         toplam = round(satisfiyati + turkiye_masrafi,2)
         tplm_uz = len(str(toplam))
 
-        print(f"\n{' Araç Bilgisi ':=^{tbl_gen_dis}}\n")
-        print(f"{'Aracın Vergisiz Satış Bedeli':<{tbl_gen_ic}} : {satisfiyati:.2f}₺")
+        clear()
+        print(menu_title())
+        print(f"\n{' Araç Bilgisi ':-^{tbl_gen_dis}}\n")
+        print(f"{'Aracın Vergisiz Satış Bedeli':<{tbl_gen_ic}} : {satisfiyati:{tplm_uz}.2f}₺")
         print(f"{'Aracın Motor Hacmi':<{tbl_gen_ic}} : {motorhacmi}cc")
         print(f"{'Aracın Elektrik Motoru Gücü':<{tbl_gen_ic}} : {motorgucu}kWh")        
         print(f"{'Aracın Yaşı':<{tbl_gen_ic}} :", aracyasi)
         print(f"{'Araca Uygulanacak Amortisman':<{tbl_gen_ic}} : {aracyasi + 1}. Kademe %{amrtsmn(aracyasi)} Amortisman")
-        print(f"{'Amortisman Sonrası Araç Bedeli':<{tbl_gen_ic}} : {cif:.2f}₺")
-        print(f"\n{' Vergiler ':=^{tbl_gen_dis}}\n")
+        print(f"{'Amortisman Sonrası Araç Bedeli':<{tbl_gen_ic}} : {cif:{tplm_uz}.2f}₺")
+        print(f"\n{' Vergiler ':-^{tbl_gen_dis}}\n")
         print(f"{'Navlun, Sigorta ve Sair Masraf Bedeli':<{tbl_gen_ic}} : {navlun_sigorta + sair_masraf:{tplm_uz}.2f}₺")
         print(f"{'Araca Uygulanacak ÖTV Bedeli ve Oranı':<{tbl_gen_ic}} : {otv:{tplm_uz}.2f}₺ (%{otv_orani})")
         print(f"{'Araca Uygulanacak KDV Bedeli ve Oranı':<{tbl_gen_ic}} : {kdv:{tplm_uz}.2f}₺ (%{kdv_orani})")
@@ -300,47 +374,23 @@ while True :
         print(f"{'Anahtar Teslim Hizmet Bedeli':<{tbl_gen_ic}} : {hizmet_bedeli:{tplm_uz}.2f}₺")
         print(f"{'':-^{tbl_gen_ic}}")
         print(f"{'Aracın Türkiyedeki Toplam Masrafı':<{tbl_gen_ic}} : {turkiye_masrafi:{tplm_uz}.2f}₺")
-        print(f"\n{'':=^{tbl_gen_dis}}")
+        print(f"\n{'':-^{tbl_gen_dis}}")
         print(f"\n{'Aracın Toplam Satınalma Maliyeti':<{tbl_gen_ic}} : {toplam:{tplm_uz}.2f}₺")
-        print(f"\n{'':=^{tbl_gen_dis}}\n")
+        print(f"\n{'':-^{tbl_gen_dis}}")
+        if menu_alt() == "break": break
 
     # Benzinli/Dizel Araç Vergisi Hesaplama
-    elif inp_tercih == "3" :
-        print(f"\n{' Benzinli/Dizel Araç ':-^{tbl_gen_dis}}")
-        inp_satin_alma_yili = input("\nAraç satın alma yılını giriniz: ")
-        try :
-            satin_alma_yili = int(inp_satin_alma_yili)
-        except :
-            print(f"\n{' !!!!! ':-^{tbl_gen_dis}}")
-            print(f"\nHata!!! {inp_satin_alma_yili} sayısal veri değildir. Lütfen sayısal veri giriniz!")
-            continue
+    elif inp_menu == "3" :
+        clear()
+        print(menu_title())
+        print(f"\n Benzinli/Dizel araç hesapla")
+        yil_1 = arac_satin_alma_yili()
+        yil_2 = arac_yurda_giris_yili()
+        motorhacmi = arac_motorhacmi()
+        satisfiyati = arac_satisfiyati()
 
-        inp_yurda_giris_yili = input("\nAracın Türkiye\'ye giriş yılını giriniz: ")
-        try :
-            yurda_giris_yili = int(inp_yurda_giris_yili)
-        except :
-            print(f"\n{' !!!!! ':-^{tbl_gen_dis}}")
-            print(f"\nHata!!! {inp_yurda_giris_yili} sayısal veri değildir. Lütfen sayısal veri giriniz!")
-            continue
-
-        inp_motorhacmi = input("\nAracın motor hacmini cc olarak giriniz: ")
-        try :
-            motorhacmi = int(inp_motorhacmi)
-        except :
-            print(f"\n{' !!!!! ':-^{tbl_gen_dis}}")
-            print(f"\nHata!!! {inp_motorhacmi} sayısal veri değildir. Lütfen sayısal veri giriniz!")
-            continue
-
-        inp_satisfiyati = input("\nAracın vergisiz satın alma bedelini ₺ olarak giriniz: ")
-        try :
-            satisfiyati = float(inp_satisfiyati)
-        except :
-            print(f"\n{' !!!!! ':-^{tbl_gen_dis}}")
-            print(f"\nHata!!! {inp_satisfiyati} sayısal veri değildir. Lütfen sayısal veri giriniz!")
-            continue
-
-        if yurda_giris_yili >= satin_alma_yili :
-            aracyasi = yurda_giris_yili - satin_alma_yili
+        if yil_2 >= yil_1 :
+            aracyasi = yil_2 - yil_1
         else :
             print(f"\n{' !!!!! ':-^{tbl_gen_dis}}")
             print(f"\n{'Satın alma tarihi Yurda giriş tarihinden küçük olmamaz.':^{tbl_gen_dis}}")
@@ -369,30 +419,29 @@ while True :
         toplam = round(satisfiyati + turkiye_masrafi,2)
         tplm_uz = len(str(toplam))
 
-        print(f"\n{' Araç Bilgisi ':=^{tbl_gen_dis}}\n")
-        print(f"{'Aracın Vergisiz Satış Bedeli':<{tbl_gen_ic}} : {satisfiyati:.2f}₺")
-        print(f"{'Aracın Motor Hacmi':<{tbl_gen_ic}} : {motorhacmi}cc")
-        print(f"{'Aracın Yaşı':<{tbl_gen_ic}} :", aracyasi)
-        print(f"{'Araca Uygulanacak Amortisman':<{tbl_gen_ic}} : {aracyasi + 1}. Kademe %{amrtsmn(aracyasi)} Amortisman")
-        print(f"{'Amortisman Sonrası Araç Bedeli':<{tbl_gen_ic}} : {cif:.2f}₺")
-        print(f"\n{' Vergiler ':=^{tbl_gen_dis}}\n")
-        print(f"{'Navlun, Sigorta ve Sair Masraf Bedeli':<{tbl_gen_ic}} : {navlun_sigorta + sair_masraf:{tplm_uz}.2f}₺")
-        print(f"{'Araca Uygulanacak ÖTV Bedeli ve Oranı':<{tbl_gen_ic}} : {otv:{tplm_uz}.2f}₺ (%{otv_orani})")
-        print(f"{'Araca Uygulanacak KDV Bedeli ve Oranı':<{tbl_gen_ic}} : {kdv:{tplm_uz}.2f}₺ (%{kdv_orani})")
+        clear()
+        print(menu_title())
+        print(f"\n{' Araç Bilgisi ':-^{tbl_gen_dis}}\n")
+        print(f"{' Aracın Vergisiz Satış Bedeli':<{tbl_gen_ic}} : {satisfiyati:{tplm_uz}.2f}₺")
+        print(f"{' Aracın Motor Hacmi':<{tbl_gen_ic}} : {motorhacmi}cc")
+        print(f"{' Aracın Yaşı':<{tbl_gen_ic}} :", aracyasi)
+        print(f"{' Araca Uygulanacak Amortisman':<{tbl_gen_ic}} : {aracyasi + 1}. Kademe %{amrtsmn(aracyasi)} Amortisman")
+        print(f"{' Amortisman Sonrası Araç Bedeli':<{tbl_gen_ic}} : {cif:{tplm_uz}.2f}₺")
+        print(f"\n{' Vergiler ':-^{tbl_gen_dis}}\n")
+        print(f"{' Navlun, Sigorta ve Sair Masraf Bedeli':<{tbl_gen_ic}} : {navlun_sigorta + sair_masraf:{tplm_uz}.2f}₺")
+        print(f"{' Araca Uygulanacak ÖTV Bedeli ve Oranı':<{tbl_gen_ic}} : {otv:{tplm_uz}.2f}₺ (%{otv_orani})")
+        print(f"{' Araca Uygulanacak KDV Bedeli ve Oranı':<{tbl_gen_ic}} : {kdv:{tplm_uz}.2f}₺ (%{kdv_orani})")
         print(f"{'':-^{tbl_gen_ic}}")
-        print(f"{'Aracın ÖTV ve KDV Bedeli Toplamı':<{tbl_gen_ic}} : {vergi_toplami:{tplm_uz}.2f}₺")
-        print(f"\n{'Ruhsat, TRT Bandrol, TÜV, vs Bedeli':<{tbl_gen_ic}} : {diger_bedeller:{tplm_uz}.2f}₺")
-        print(f"{'Anahtar Teslim Hizmet Bedeli':<{tbl_gen_ic}} : {hizmet_bedeli:{tplm_uz}.2f}₺")
+        print(f"{' Aracın ÖTV ve KDV Bedeli Toplamı':<{tbl_gen_ic}} : {vergi_toplami:{tplm_uz}.2f}₺")
+        print(f"\n{' Ruhsat, TRT Bandrol, TÜV, vs Bedeli':<{tbl_gen_ic}} : {diger_bedeller:{tplm_uz}.2f}₺")
+        print(f"{' Anahtar Teslim Hizmet Bedeli':<{tbl_gen_ic}} : {hizmet_bedeli:{tplm_uz}.2f}₺")
         print(f"{'':-^{tbl_gen_ic}}")
-        print(f"{'Aracın Türkiyedeki Toplam Masrafı':<{tbl_gen_ic}} : {turkiye_masrafi:{tplm_uz}.2f}₺")
-        print(f"\n{'':=^{tbl_gen_dis}}")
-        print(f"\n{'Aracın Toplam Satınalma Maliyeti':<{tbl_gen_ic}} : {toplam:{tplm_uz}.2f}₺")
-        print(f"\n{'':=^{tbl_gen_dis}}\n")
+        print(f"{' Aracın Türkiyedeki Toplam Masrafı':<{tbl_gen_ic}} : {turkiye_masrafi:{tplm_uz}.2f}₺")
+        print(f"\n{'':-^{tbl_gen_dis}}")
+        print(f"\n{' Aracın Toplam Satınalma Maliyeti':<{tbl_gen_ic}} : {toplam:{tplm_uz}.2f}₺")
+        print(f"\n{'':-^{tbl_gen_dis}}")
+        if menu_alt() == "break": break
 
-    # Programdan Çıkış
-    elif inp_tercih == "9" :
-        print(f"\n{' İyi Günler ':=^{tbl_gen_dis}}\n")
-        break
     else :
         print(f"\n{' !!!!! ':-^{tbl_gen_dis}}\n")
         print("Lütfen seçenek numarasını doğru giriniz.")

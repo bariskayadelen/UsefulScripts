@@ -1,6 +1,6 @@
 # Hız/Mesafe/Zaman Hesaplama Programı
 from os import system, name
-from time import sleep
+# from time import sleep
 
 # Define clear function
 def clear():
