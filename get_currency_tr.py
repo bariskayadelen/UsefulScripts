@@ -87,7 +87,7 @@ print(f"{' Zaman':<{tbl_len_in}} : {time}")
 
 print(f"\n{' Döviz':<{tbl_len_in}} : Alış\tSatış")
 print(f" {'':-^{tbl_len_in}}  {'':-^{10}} {'':-^{10}}")
-print(f"{' US Dolar':<{tbl_len_in}} : {usd_buy} \t{usd_sell}")
+print(f"{' US Dollar':<{tbl_len_in}} : {usd_buy} \t{usd_sell}")
 print(f"{' Euro':<{tbl_len_in}} : {eur_buy} \t{eur_sell}")
 print(f"{' GB Pound':<{tbl_len_in}} : {gbp_buy} \t{gbp_sell}")
 print(f"{' Australian Dollar':<{tbl_len_in}} : {aud_buy} \t{aud_sell}")
