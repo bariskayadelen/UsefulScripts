@@ -1,14 +1,17 @@
-import get_fuelprice_tr as fuel
+import get_currency_tr as cur
 
-# Fuel Price
-print(fuel.price('fuel'))
+# Check web page https status
+print(cur.req.status_code)
+# 200
 
-# Diesel Price
-print(fuel.price('diesel'))
+# Get bank name
+print(cur.company)
+# Türkiye İş Bankası
 
-# LPG Price
-print(fuel.price('lpg'))
+# Get bank url
+print(cur.url)
+# https://www.isbank.com.tr/en/foreign-exchange-rates
 
-# All Prices
-print(fuel.price('all'))
-
+# Get currency code, buy and sell rate
+print(cur.price('EUR'))
+# ('EUR', 18.1227, 18.9667)
