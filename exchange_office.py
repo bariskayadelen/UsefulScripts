@@ -3,7 +3,7 @@
 from datetime import datetime
 # from unicodedata import digit
 import urllib.request
-from bs4 import BeautifulSoup as soup
+from bs4 import BeautifulSoup4 as soup
 from os import system, name
 
 # Define clear function
