@@ -94,4 +94,4 @@ def main():
             print(f"\n{'':=^{tbl_len_out}}\n")
 
 if __name__ == "__main__":
-    main()
+    main()  
