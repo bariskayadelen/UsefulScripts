@@ -60,35 +60,38 @@ def amrtsmn(a) :
         return b
 
 # Elektrikli Motor gucunden OTV orani hesaplama 
-# (a:Elektrik motor gucu)
-def mtrgc_elktrk(a) :
-    if a < 85 :
-        b = 10
-        return b
-    elif 85 <= a < 120 :
-        b = 25
-        return b
+# (a:Elektrik motor gucu, c:Satis fiyati)
+def mtrgc_elktrk(a,c) :
+    if a < 160 and c < 1250000 :
+        d = 10
+        return d
+    elif a < 160 :
+        d = 40
+        return d
+    elif 160 < a and c < 1350000 :
+        d = 50
+        return d
     else :
-        b = 60
-        return b
+        d = 60
+        return d
 
 # Hibrit Motor gucunden OTV orani hesaplama 
 # (a:Elektrik motor gucu, b:Motor hacmi, c:Satis fiyati)
 # Kaynak: https://www.resmigazete.gov.tr/eskiler/2022/01/20220113-2.pdf
 def mtrgc_hbrt(a,b,c) :
-    if 50 < a and b < 1800 and c < 130000 :
+    if 50 < a and b < 1800 and c < 228000 :
         d = 45
         return d
-    elif 50 < a and b < 1800 and 130000 <= b < 210000 :
+    elif 50 < a and b < 1800 and 228000 <= b < 350000 :
         d = 50
         return d
-    elif 50 < a and b < 1800 and 2100000 <= c :
+    elif 50 < a and b < 1800 and 3500000 <= c :
         d = 80
         return d
     elif 100 < a and 2000 <= b < 2500 and c < 170000 :
         d = 130
         return d
-    elif 100 < a and 2000 <= b < 2500 and 170000 <= c :
+    elif 100 < a and b < 2500 and 170000 <= c :
         d = 150
         return d
     else :
@@ -99,30 +102,30 @@ def mtrgc_hbrt(a,b,c) :
 # (a:Motor hacmi b:Satis fiyati)
 # Kaynak: https://www.resmigazete.gov.tr/eskiler/2022/01/20220113-2.pdf
 def mtrgc_bnzn(a,b) :
-    if a < 1600 and b < 120000 :
-        c = 45
-        return c
-    elif a < 1600 and 120000 <= b < 150000 :
-        c = 50
-        return c
-    elif a < 1600 and 150000 <= b < 175000 :
-        c = 60
-        return c
-    elif a < 1600 and 175000 <= b < 200000 :
-        c = 70
-        return c
-    elif a < 1600 and 200000 <= b :
-        c = 80
-        return c
+    if a < 1600 and b < 184000 :
+        d = 45
+        return d
+    elif a < 1600 and 184000 <= b < 220000 :
+        d = 50
+        return d
+    elif a < 1600 and 220000 <= b < 250000 :
+        d = 60
+        return d
+    elif a < 1600 and 250000 <= b < 280000 :
+        d = 70
+        return d
+    elif a < 1600 and 280000 <= b :
+        d = 80
+        return d
     elif 1600 <= a < 2000 and b < 170000 :
-        c = 130
-        return c
+        d = 130
+        return d
     elif 1600 <= a < 2000 and 170000 <= b :
-        c = 150
-        return c
+        d = 150
+        return d
     else :
-        c = 220
-        return c
+        d = 220
+        return d
 
 def menu_title():
     return (f"\n{' Diplomatik Araç Vergisi Hesaplama ':=^{tbl_gen_dis}}")
@@ -219,11 +222,11 @@ navlun_sigorta = exchange('EUR', float(200))
 # Sair Masraf Bedeli 150 Euro
 sair_masraf = exchange('EUR', float(150))
 
-# Diger Bedeller Toplami 400 Euro
-diger_bedeller = exchange('EUR', float(400))
+# Diger Bedeller Toplami 500 Euro
+diger_bedeller = exchange('EUR', float(500))
 
-# Hizmet Bedeli 450 Euro
-hizmet_bedeli = exchange('EUR', float(450))
+# Hizmet Bedeli 500 Euro
+hizmet_bedeli = exchange('EUR', float(500))
 
 # Tablo Genisligi
 tbl_gen_dis = 72
@@ -266,7 +269,7 @@ while True :
             print(f"\n{'':=^{tbl_gen_dis}}\n")
             continue
         
-        otv_orani = mtrgc_elktrk(motorgucu)
+        otv_orani = mtrgc_elktrk(motorgucu,satisfiyati)
         aracyasi = yil_2 - yil_1
 
         amortisman_yuzdesi = amrtsmn(aracyasi) / 100
@@ -293,7 +296,10 @@ while True :
         print(menu_title())
         print(f"\n{' Araç Bilgisi ':-^{tbl_gen_dis}}\n")
         print(f"{'Aracın Vergisiz Satış Bedeli':<{tbl_gen_ic}} : {satisfiyati:{tplm_uz}.2f}₺")
+        print(f"{' Aracın Motor Tipi':<{tbl_gen_ic}} : Elektrikli")
         print(f"{'Aracın Motor Gücü':<{tbl_gen_ic}} : {motorgucu}kWh")
+        print(f"{' Aracın Satın Alma Yılı':<{tbl_gen_ic}} :", yil_1)
+        print(f"{' Aracın Türkiye Giriş Yılı':<{tbl_gen_ic}} :", yil_2)
         print(f"{'Aracın Yaşı':<{tbl_gen_ic}} :", aracyasi)
         print(f"{'Araca Uygulanacak Amortisman':<{tbl_gen_ic}} : {aracyasi + 1}. Kademe %{amrtsmn(aracyasi)} Amortisman")
         print(f"{'Amortisman Sonrası Araç Bedeli':<{tbl_gen_ic}} : {cif:{tplm_uz}.2f}₺")
@@ -359,8 +365,11 @@ while True :
         print(menu_title())
         print(f"\n{' Araç Bilgisi ':-^{tbl_gen_dis}}\n")
         print(f"{'Aracın Vergisiz Satış Bedeli':<{tbl_gen_ic}} : {satisfiyati:{tplm_uz}.2f}₺")
+        print(f"{' Aracın Motor Tipi':<{tbl_gen_ic}} : Hibrit")
         print(f"{'Aracın Motor Hacmi':<{tbl_gen_ic}} : {motorhacmi}cc")
-        print(f"{'Aracın Elektrik Motoru Gücü':<{tbl_gen_ic}} : {motorgucu}kWh")        
+        print(f"{'Aracın Elektrik Motoru Gücü':<{tbl_gen_ic}} : {motorgucu}kWh")
+        print(f"{' Aracın Satın Alma Yılı':<{tbl_gen_ic}} :", yil_1)
+        print(f"{' Aracın Türkiye Giriş Yılı':<{tbl_gen_ic}} :", yil_2)
         print(f"{'Aracın Yaşı':<{tbl_gen_ic}} :", aracyasi)
         print(f"{'Araca Uygulanacak Amortisman':<{tbl_gen_ic}} : {aracyasi + 1}. Kademe %{amrtsmn(aracyasi)} Amortisman")
         print(f"{'Amortisman Sonrası Araç Bedeli':<{tbl_gen_ic}} : {cif:{tplm_uz}.2f}₺")
@@ -423,7 +432,10 @@ while True :
         print(menu_title())
         print(f"\n{' Araç Bilgisi ':-^{tbl_gen_dis}}\n")
         print(f"{' Aracın Vergisiz Satış Bedeli':<{tbl_gen_ic}} : {satisfiyati:{tplm_uz}.2f}₺")
+        print(f"{' Aracın Motor Tipi':<{tbl_gen_ic}} : Benzinli")
         print(f"{' Aracın Motor Hacmi':<{tbl_gen_ic}} : {motorhacmi}cc")
+        print(f"{' Aracın Satın Alma Yılı':<{tbl_gen_ic}} :", yil_1)
+        print(f"{' Aracın Türkiye Giriş Yılı':<{tbl_gen_ic}} :", yil_2)
         print(f"{' Aracın Yaşı':<{tbl_gen_ic}} :", aracyasi)
         print(f"{' Araca Uygulanacak Amortisman':<{tbl_gen_ic}} : {aracyasi + 1}. Kademe %{amrtsmn(aracyasi)} Amortisman")
         print(f"{' Amortisman Sonrası Araç Bedeli':<{tbl_gen_ic}} : {cif:{tplm_uz}.2f}₺")
