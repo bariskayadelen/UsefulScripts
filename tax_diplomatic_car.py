@@ -214,7 +214,7 @@ def arac_satisfiyati():
         continue
 
 # KDV Orani
-kdv_orani = 18
+kdv_orani = 20
 
 # Navlun ve Sigorta Bedeli 200 Euro
 navlun_sigorta = exchange('EUR', float(200))
