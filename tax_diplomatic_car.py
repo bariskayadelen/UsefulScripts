@@ -1,10 +1,10 @@
-# Diplomatik aracın Türkiye'ye getirildiğinde ödeyeceği vergiyi hesaplayıcı program
+# Program to calculate the tax to be paid when the a vehicle is brought to Turkey
 
 from unicodedata import numeric
 from os import system, name
-# from datetime import datetime
 import requests
 from bs4 import BeautifulSoup as soup
+from get_currency_tr import table_currency
 
 # Define clear function
 def clear():
@@ -38,26 +38,27 @@ def exchange(inp, amount):
         total = float(eur_sell) * amount
         return total
 
-# Araç Yaşından Amortisman Oranını Hesaplama
-def amrtsmn(a) :
-    if a == 0 :
-        b = 0
-        return b
-    elif a == 1 :
-        b = 20
-        return b
-    elif a == 2 :
-        b = 30
-        return b
-    elif a == 3 :
-        b = 40
-        return b
-    elif a == 4 :
-        b = 50
-        return b
-    else :
-        b = 60
-        return b
+# Navlun ve Sigorta Bedeli 200 Euro
+navlun_sigorta = exchange('EUR', float(200))
+
+# Sair Masraf Bedeli 150 Euro
+sair_masraf = exchange('EUR', float(150))
+
+# Diger Bedeller Toplami 500 Euro
+diger_bedeller = exchange('EUR', float(500))
+
+# Hizmet Bedeli 500 Euro
+hizmet_bedeli = exchange('EUR', float(500))
+
+# KDV Orani
+kdv_orani = 20
+
+# Car Age
+arac_yasi = lambda x,y : y-x if x<=y else print("Check car produce and sale year")
+
+# Amortisman
+amortisman_orani = lambda x : 0 if x == 0 else (20 if x == 1 else (30 if x == 2 else (40 if x == 3 else (50 if x == 4 else 60))))
+depreciation_percentage = amortisman_orani(arac_yasi) / 100
 
 # Elektrikli Motor gucunden OTV orani hesaplama 
 # (a:Elektrik motor gucu, c:Satis fiyati)
@@ -126,6 +127,24 @@ def mtrgc_bnzn(a,b) :
     else :
         d = 220
         return d
+
+def otv_benzinli(motor_hacmi, satis_fiyati):
+    if motor_hacmi < 1600 and satis_fiyati < 184000:
+        return 45
+    elif motor_hacmi < 1600 and 184000 <= satis_fiyati < 220000:
+        return 50
+    elif motor_hacmi < 1600 and 220000 <= satis_fiyati < 250000:
+        return 60
+    elif motor_hacmi < 1600 and 250000 <= satis_fiyati < 280000:
+        return 70
+    elif motor_hacmi < 1600 and 280000 <= satis_fiyati:
+        return 80
+    elif 1600 <= motor_hacmi < 2000 and satis_fiyati < 170000:
+        return 130
+    elif 1600 <= motor_hacmi < 2000 and 170000 <= satis_fiyati:
+        return 150    
+    else:
+        return 220
 
 def menu_title():
     return (f"\n{' Diplomatik Araç Vergisi Hesaplama ':=^{tbl_gen_dis}}")
@@ -213,21 +232,6 @@ def arac_satisfiyati():
             print(f"\n Hata!!! {inp} sayısal veri değildir. Lütfen sayısal veri giriniz!")
         continue
 
-# KDV Orani
-kdv_orani = 20
-
-# Navlun ve Sigorta Bedeli 200 Euro
-navlun_sigorta = exchange('EUR', float(200))
-
-# Sair Masraf Bedeli 150 Euro
-sair_masraf = exchange('EUR', float(150))
-
-# Diger Bedeller Toplami 500 Euro
-diger_bedeller = exchange('EUR', float(500))
-
-# Hizmet Bedeli 500 Euro
-hizmet_bedeli = exchange('EUR', float(500))
-
 # Tablo Genisligi
 tbl_gen_dis = 72
 tbl_gen_ic = 40
@@ -261,7 +265,7 @@ while True :
         satisfiyati = arac_satisfiyati()
         
         if yil_2 >= yil_1 :
-            aracyasi = yil_2 - yil_1
+            arac_yasi = yil_2 - yil_1
         else :
             print(f"\n{' !!!!! ':-^{tbl_gen_dis}}")
             print(f"\n{'Satın alma tarihi Yurda giriş tarihinden küçük olmamaz.':^{tbl_gen_dis}}")
@@ -270,12 +274,13 @@ while True :
             continue
         
         otv_orani = mtrgc_elktrk(motorgucu,satisfiyati)
-        aracyasi = yil_2 - yil_1
+        arac_yasi = yil_2 - yil_1
 
-        amortisman_yuzdesi = amrtsmn(aracyasi) / 100
+        amortisman_yuzdesi = amortisman_orani(arac_yasi) / 100
+        
 
         # Vergiye Esas Bedel
-        cif = round((satisfiyati * (100 - amrtsmn(aracyasi)) / 100) + navlun_sigorta,2)
+        cif = round((satisfiyati * (100 - amortisman_orani(arac_yasi)) / 100) + navlun_sigorta,2)
 
         # OTV
         otv_matrahi = round(cif + sair_masraf,2)
@@ -300,8 +305,8 @@ while True :
         print(f"{'Aracın Motor Gücü':<{tbl_gen_ic}} : {motorgucu}kWh")
         print(f"{' Aracın Satın Alma Yılı':<{tbl_gen_ic}} :", yil_1)
         print(f"{' Aracın Türkiye Giriş Yılı':<{tbl_gen_ic}} :", yil_2)
-        print(f"{'Aracın Yaşı':<{tbl_gen_ic}} :", aracyasi)
-        print(f"{'Araca Uygulanacak Amortisman':<{tbl_gen_ic}} : {aracyasi + 1}. Kademe %{amrtsmn(aracyasi)} Amortisman")
+        print(f"{'Aracın Yaşı':<{tbl_gen_ic}} :", arac_yasi)
+        print(f"{'Araca Uygulanacak Amortisman':<{tbl_gen_ic}} : {arac_yasi + 1}. Kademe %{amortisman_orani(arac_yasi)} Amortisman")
         print(f"{'Amortisman Sonrası Araç Bedeli':<{tbl_gen_ic}} : {cif:{tplm_uz}.2f}₺")
         print(f"\n{' Vergiler ':-^{tbl_gen_dis}}\n")
         print(f"{'Navlun, Sigorta ve Sair Masraf Bedeli':<{tbl_gen_ic}} : {navlun_sigorta + sair_masraf:{tplm_uz}.2f}₺")
@@ -331,7 +336,7 @@ while True :
         satisfiyati = arac_satisfiyati()
 
         if yil_2 >= yil_1 :
-            aracyasi = yil_2 - yil_1
+            arac_yasi = yil_2 - yil_1
         else :
             print(f"\n{' !!!!! ':-^{tbl_gen_dis}}")
             print(f"\n{'Satın alma tarihi Yurda giriş tarihinden küçük olmamaz.':^{tbl_gen_dis}}")
@@ -340,10 +345,10 @@ while True :
             continue
 
         # Amortisman yuzdesi hesaplama
-        amortisman_yuzdesi = amrtsmn(aracyasi) / 100
+        amortisman_yuzdesi = amortisman_orani(arac_yasi) / 100
         
         # Vergiye Esas Bedel
-        cif = round((satisfiyati * (100 - amrtsmn(aracyasi)) / 100) + navlun_sigorta,2)
+        cif = round((satisfiyati * (100 - amortisman_orani(arac_yasi)) / 100) + navlun_sigorta,2)
 
         # OTV
         otv_matrahi = round(cif + sair_masraf,2)
@@ -370,8 +375,8 @@ while True :
         print(f"{'Aracın Elektrik Motoru Gücü':<{tbl_gen_ic}} : {motorgucu}kWh")
         print(f"{' Aracın Satın Alma Yılı':<{tbl_gen_ic}} :", yil_1)
         print(f"{' Aracın Türkiye Giriş Yılı':<{tbl_gen_ic}} :", yil_2)
-        print(f"{'Aracın Yaşı':<{tbl_gen_ic}} :", aracyasi)
-        print(f"{'Araca Uygulanacak Amortisman':<{tbl_gen_ic}} : {aracyasi + 1}. Kademe %{amrtsmn(aracyasi)} Amortisman")
+        print(f"{'Aracın Yaşı':<{tbl_gen_ic}} :", arac_yasi)
+        print(f"{'Araca Uygulanacak Amortisman':<{tbl_gen_ic}} : {arac_yasi + 1}. Kademe %{amortisman_orani(arac_yasi)} Amortisman")
         print(f"{'Amortisman Sonrası Araç Bedeli':<{tbl_gen_ic}} : {cif:{tplm_uz}.2f}₺")
         print(f"\n{' Vergiler ':-^{tbl_gen_dis}}\n")
         print(f"{'Navlun, Sigorta ve Sair Masraf Bedeli':<{tbl_gen_ic}} : {navlun_sigorta + sair_masraf:{tplm_uz}.2f}₺")
@@ -399,7 +404,7 @@ while True :
         satisfiyati = arac_satisfiyati()
 
         if yil_2 >= yil_1 :
-            aracyasi = yil_2 - yil_1
+            arac_yasi = yil_2 - yil_1
         else :
             print(f"\n{' !!!!! ':-^{tbl_gen_dis}}")
             print(f"\n{'Satın alma tarihi Yurda giriş tarihinden küçük olmamaz.':^{tbl_gen_dis}}")
@@ -407,11 +412,12 @@ while True :
             print(f"\n{'':=^{tbl_gen_dis}}\n")
             continue
         
-        otv_orani = mtrgc_bnzn(motorhacmi, satisfiyati)
-        amortisman_yuzdesi = amrtsmn(aracyasi) / 100
+        # otv_orani = mtrgc_bnzn(motorhacmi, satisfiyati)
+        otv_orani = otv_benzinli(motorhacmi, satisfiyati)
+        amortisman_yuzdesi = amortisman_orani(arac_yasi) / 100
         
         # Vergiye Esas Bedel
-        cif = round((satisfiyati * (100 - amrtsmn(aracyasi)) / 100) + navlun_sigorta,2)
+        cif = round((satisfiyati * (100 - amortisman_orani(arac_yasi)) / 100) + navlun_sigorta,2)
 
         # OTV
         otv_matrahi = round(cif + sair_masraf,2)
@@ -436,8 +442,9 @@ while True :
         print(f"{' Aracın Motor Hacmi':<{tbl_gen_ic}} : {motorhacmi}cc")
         print(f"{' Aracın Satın Alma Yılı':<{tbl_gen_ic}} :", yil_1)
         print(f"{' Aracın Türkiye Giriş Yılı':<{tbl_gen_ic}} :", yil_2)
-        print(f"{' Aracın Yaşı':<{tbl_gen_ic}} :", aracyasi)
-        print(f"{' Araca Uygulanacak Amortisman':<{tbl_gen_ic}} : {aracyasi + 1}. Kademe %{amrtsmn(aracyasi)} Amortisman")
+        print(f"{' Aracın Yaşı':<{tbl_gen_ic}} :", arac_yasi)
+        # print(f"{' Car age':<{tbl_gen_ic}} :", car_age(yil_1,yil_2))
+        print(f"{' Araca Uygulanacak Amortisman':<{tbl_gen_ic}} : {arac_yasi + 1}. Kademe %{amortisman_orani(arac_yasi)} Amortisman")
         print(f"{' Amortisman Sonrası Araç Bedeli':<{tbl_gen_ic}} : {cif:{tplm_uz}.2f}₺")
         print(f"\n{' Vergiler ':-^{tbl_gen_dis}}\n")
         print(f"{' Navlun, Sigorta ve Sair Masraf Bedeli':<{tbl_gen_ic}} : {navlun_sigorta + sair_masraf:{tplm_uz}.2f}₺")
